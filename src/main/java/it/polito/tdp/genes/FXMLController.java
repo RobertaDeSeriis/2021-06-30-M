@@ -1,6 +1,3 @@
-/**
- * Sample Skeleton for 'Scene.fxml' Controller Class
- */
 
 package it.polito.tdp.genes;
 
@@ -38,12 +35,11 @@ public class FXMLController {
 
     @FXML
     void doContaArchi(ActionEvent event) {
-
     }
 
     @FXML
     void doRicerca(ActionEvent event) {
-
+    	
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -57,6 +53,9 @@ public class FXMLController {
 
 	public void setModel(Model model) {
 		this.model = model ;
+		
+		model.creaGrafo();
+		txtResult.appendText(model.creaGrafo());
 		
 	}
 }
