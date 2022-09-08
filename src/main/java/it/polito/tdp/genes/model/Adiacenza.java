@@ -33,7 +33,7 @@ public class Adiacenza implements Comparable<Adiacenza>{
 		return peso;
 	}
 
-	public void setInfo(double peso) {
+	public void setPeso(double peso) {
 		this.peso = peso;
 	}
 

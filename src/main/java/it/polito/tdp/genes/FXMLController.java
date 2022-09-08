@@ -54,8 +54,8 @@ public class FXMLController {
 	public void setModel(Model model) {
 		this.model = model ;
 		
-		model.creaGrafo();
 		txtResult.appendText(model.creaGrafo());
+		txtResult.appendText("\n"+model.pesoMaxMin());
 		
 	}
 }
