@@ -2,6 +2,7 @@
 package it.polito.tdp.genes;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.genes.model.Model;
@@ -35,10 +36,42 @@ public class FXMLController {
 
     @FXML
     void doContaArchi(ActionEvent event) {
+    	txtResult.clear();
+    	double x;
+    	double max=model.getPesoMax();
+    	double min=model.getPesoMin(); 
+    try {
+    	x= Double.parseDouble(this.txtSoglia.getText());
+    	if(x>min && x<max) {
+    		txtResult.appendText(model.MaxMin(x));
+    	}
+    	
+    }catch(NumberFormatException e) {
+    	txtResult.appendText("\nInserisci soglia" );
+    }
     }
 
     @FXML
     void doRicerca(ActionEvent event) {
+    	txtResult.clear();
+    	txtResult.appendText("Cerco cammino peso massimo...");
+    	
+    	int n;
+    	try {
+    		n=Integer.parseInt(this.txtSoglia.getText());
+    		List<Integer> rico= model.calcolaPercorso(n);
+    		if(rico.isEmpty())
+    			txtResult.appendText("Lista vuota\n");
+    		for(Integer i: rico) {
+    			txtResult.appendText(i+"\n");
+    		}
+    		
+    	}catch(NumberFormatException e) {
+    		txtResult.clear();
+    		txtResult.appendText("Inserire una soglia valida\n");
+    		return;
+    	}
+    	
     	
     }
 

@@ -19,6 +19,8 @@ public class Model {
 	Graph <Integer, DefaultWeightedEdge> grafo;
 	double pesoMax;
 	double pesoMin;
+	double mediaMigliore;
+	List<Integer> migliore;
 	
 	public Model() {
 		this.dao= new GenesDao();
@@ -45,16 +47,83 @@ public class Model {
 	}
 	
 	public String pesoMaxMin() {
-		pesoMax= 0.0;
-		pesoMin= 0.0;
+		//pesoMax= 0.0;
+		//pesoMin= 0.0;
 		
-		pesoMax=adiacenti.get(0).getPeso();
-		pesoMin=adiacenti.get(adiacenti.size()-1).getPeso();
+		pesoMax=adiacenti.get(adiacenti.size()-1).getPeso();
+		pesoMin=adiacenti.get(0).getPeso();
 		
 		return "\nPeso max= "+pesoMax+", peso min= "+pesoMin;
 	}
 
+	public double getPesoMax() {
+		return pesoMax;
+	}
 
+	public double getPesoMin() {
+		return pesoMin;
+	}
+	
+	public String MaxMin(double x){
+		List<Adiacenza> lMax= new LinkedList<>();
+		List<Adiacenza> lMin= new LinkedList<>();
+		for(Adiacenza a: archi) {
+			if(a.peso<x) {
+				lMin.add(a);
+			}
+			else if(a.peso>x) {
+				lMax.add(a);
+			}
+		}
+		return "\nSoglia "+ x + " Maggiori: "+lMax.size()+ " Minori: "+lMin.size();
+	}
+	
+	
+
+	public List<Integer> calcolaPercorso(double p)
+	{
+		migliore = new LinkedList<Integer>();
+		mediaMigliore=0.0;
+		
+		List<Integer> parziale = new LinkedList<>();
+		cercaRicorsiva(parziale,0,p);
+		return migliore;
+	}
+	
+	private void cercaRicorsiva(List<Integer> parziale,int L, double p) {
+		 
+				//condizione di terminazione
+				
+					int pesoParziale = pesoTot(parziale);
+					if(pesoParziale > pesoTot(migliore))//la strada piú lunga é la migliore
+					{
+						migliore = new LinkedList<>(parziale);
+						
+					}
+				
+				int ultimo= parziale.get(parziale.size()-1);
+				for(Integer v:Graphs.neighborListOf(this.grafo, parziale.get(parziale.size()-1))) //scorro sui vicini dell'ultimo nodo sulla lista
+				{
+					if(!parziale.contains(v) && this.grafo.getEdgeWeight(this.grafo.getEdge(ultimo, v))>p);
+					{
+						parziale.add(v);
+						cercaRicorsiva(parziale,L+1, p);
+						parziale.remove(parziale.size()-1);
+					}
+					
+				}
+		
+	}
+
+	private int pesoTot(List<Integer> parziale) {
+		
+		int peso = 0;
+		
+		for(int i=0; i<parziale.size()-1; i++) {
+			peso+= grafo.getEdgeWeight(grafo.getEdge(parziale.get(i), parziale.get(i-1)));
+		}
+		return peso;
+	}
 
 	
 }

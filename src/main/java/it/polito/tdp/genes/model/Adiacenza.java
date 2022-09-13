@@ -39,7 +39,16 @@ public class Adiacenza implements Comparable<Adiacenza>{
 
 	@Override
 	public int compareTo(Adiacenza o) {
-		return (int) (this.peso-o.peso);
+		// compare to con double ordine crescente 
+		if(this.getPeso()>o.getPeso())
+		{
+			return 1;
+		}
+		if(this.getPeso()<o.getPeso())
+		{
+			return -1;
+		}
+		return 0;
 	}
 	
 	
