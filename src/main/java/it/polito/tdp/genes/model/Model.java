@@ -80,17 +80,22 @@ public class Model {
 	
 	
 
-	public List<Integer> calcolaPercorso(double p)
+	public List<Integer> calcolaPercorso(double p) //ricorsione senza vertice di partenza
 	{
 		migliore = new LinkedList<Integer>();
-		mediaMigliore=0.0;
-		
+		List<Integer> miglioreGiusta= new LinkedList<>(); 
 		List<Integer> parziale = new LinkedList<>();
-		cercaRicorsiva(parziale,0,p);
-		return migliore;
+		for(Integer i: vertici) { //tante ricorsioni con tutti i vertici di partenza uno x uno
+			parziale.add(i);
+			cercaRicorsiva(parziale,p);
+			if(migliore.size()>miglioreGiusta.size()) {
+				miglioreGiusta=new LinkedList<>(migliore);
+			}
+		}
+		return miglioreGiusta;
 	}
 	
-	private void cercaRicorsiva(List<Integer> parziale,int L, double p) {
+	private void cercaRicorsiva(List<Integer> parziale, double p) {
 		 
 				//condizione di terminazione
 				
@@ -107,7 +112,7 @@ public class Model {
 					if(!parziale.contains(v) && this.grafo.getEdgeWeight(this.grafo.getEdge(ultimo, v))>p);
 					{
 						parziale.add(v);
-						cercaRicorsiva(parziale,L+1, p);
+						cercaRicorsiva(parziale, p);
 						parziale.remove(parziale.size()-1);
 					}
 					
@@ -120,7 +125,7 @@ public class Model {
 		int peso = 0;
 		
 		for(int i=0; i<parziale.size()-1; i++) {
-			peso+= grafo.getEdgeWeight(grafo.getEdge(parziale.get(i), parziale.get(i-1)));
+			peso+= grafo.getEdgeWeight(grafo.getEdge(parziale.get(i), parziale.get(i+1)));
 		}
 		return peso;
 	}
